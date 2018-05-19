@@ -48,6 +48,31 @@ public abstract class Ecuaciones {
     }
 
     /**
+     * Para hallar la velocidad en X es necesario descomponer la velocidad
+     * inicial. Esto se logra multiplicando la velocidad por el coseno del
+     * angulo.
+     *
+     * @param velocidadInicial
+     * @param angulo
+     * @return v0x = velocidad*cosθ
+     */
+    public static double calcularVelocidadX(double velocidadInicial, int angulo) {
+        return (velocidadInicial * Math.cos(Math.toRadians(angulo)));
+    }
+
+    /**
+     * Para hallar la velocidad en Y es necesario descomponer la velocidad
+     * inicial. Esto se logra multiplicando la velocidad por el seno del angulo.
+     *
+     * @param velocidadInicial
+     * @param angulo
+     * @return v0y = velocidad*senθ
+     */
+    public static double calcularVelocidadY(double velocidadInicial, int angulo) {
+        return (velocidadInicial * Math.sin(Math.toRadians(angulo)));
+    }
+
+    /**
      *
      * @param v0x
      * @param tiempo
@@ -67,18 +92,32 @@ public abstract class Ecuaciones {
         return ((v0y * tiempo) - 0.5 * GRAVEDAD * tiempo * tiempo);
     }
 
+    /**
+     *
+     * @param v0x
+     * @param distancia
+     * @return tiempo = distancia/v0x
+     */
+    public static double calcularTiempo(double v0x, double distancia) {
+        return (distancia / v0x);
+    }
+
+    /**
+     * Calcula la velocidad en un tiempo determinado.
+     *
+     * @param v0y
+     * @param tiempo
+     * @return vy(t) = v0y - GRAVEDAD*tiempo
+     */
     public static double calcularVelocidadTiempoY(double v0y, double tiempo) {
         return (v0y - GRAVEDAD * tiempo);
     }
 
-    public static double calcularVelocidadX(double velocidadInicial, int angulo) {
-        return (velocidadInicial * Math.cos(Math.toRadians(angulo)));
-    }
-
-    public static double calcularVelocidadY(double velocidadInicial, int angulo) {
-        return (velocidadInicial * Math.sin(Math.toRadians(angulo)));
-    }
-
+    /**
+     * Calcular el tiempo en la altura máxima
+     * @param v0y
+     * @return tiempo = v0y/GRAVEDAD
+     */
     public static double calcularTiempoEnAlturaMaxima(double v0y) {
         return (v0y / GRAVEDAD);
     }
@@ -86,4 +125,5 @@ public abstract class Ecuaciones {
     public static double calcularVelocidadEnTiempo(double v0x, double v0y, double tiempo) {
         return Math.sqrt(Math.pow(v0x, 2) + Math.pow(calcularVelocidadTiempoY(v0y, tiempo), 2));
     }
+
 }

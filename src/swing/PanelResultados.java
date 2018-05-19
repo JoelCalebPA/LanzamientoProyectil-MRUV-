@@ -6,10 +6,10 @@
 package swing;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,36 +24,40 @@ import javax.swing.border.TitledBorder;
  */
 public class PanelResultados extends JPanel {
 
+    /* Instancia de la clase PanelResultados */
     private static PanelResultados INSTANCE;
 
-    private final String[] LABELS = {"Altura actual:", "Altura máxima alcanzada:", "Distancia recorrida:",
-        "Tiempo en el aire:", "Tiempo en alcanzar altura máxima:", "Velocidad en tiempo dado:", "Posición en tiempo dado:"};
+    private final String[] LBLSVELOCIDAD = {"Distancia recorrida: ", "Altura máxima: ",
+        "Tiempo en el aire: ", "Tiempo en altura máxima: "};
+    private final String[] LBLSTIEMPO = {"Distancia recorrida: ", "Altura alcanzada: ", "Velocidad en X: ", "Velocidad en Y: ", "Velocidad: "};
+    private final String[] LBLSDISTANCIA = {"Altura alcanzada: ", "Tiempo requerido: ", "Velocidad en X: ", "Velocidad en Y: ", "Velocidad: "};
 
-    private final JLabel lblAlturaMaxima = new JLabel(LABELS[1]);
-    private final JLabel lblDistanciaRecorrida = new JLabel(LABELS[2]);
-    private final JLabel lblTiempoEnAire = new JLabel(LABELS[3]);
-    private final JLabel lblTiempoEnAlturaMaxima = new JLabel(LABELS[4]);
-    private final JLabel lblVelocidadEnTiempo = new JLabel(LABELS[5]);
-    private final JLabel lblPosicionEnTiempo = new JLabel(LABELS[6]);
+    /* Dimension predeterminada para los paneles resultado(velocidad, tiempo, distancia) */
+    private static final Dimension PANELDIM = new Dimension(264, 158);
 
-    private final LeftPanel leftPanel = new LeftPanel();
-    private final RightPanel rightPanel = new RightPanel();
+    /* Declarando los paneles de resultados */
+    private PanelVelocidad panelVelocidad;
+    private PanelTiempo panelTiempo;
+    private PanelDistancia panelDistancia;
 
-    private TextField txtAlturaMaxima;
-    private TextField txtDistanciaRecorrida;
-    private TextField txtTiempoEnAire;
-    private TextField txtTiempoEnAlturaMaxima;
-    private TextField txtVelocidadEnTiempo;
-    private TextField txtPosicionEnTiempo;
 
-    private LabelDato lblDatoAlturaMaxima;
-    private LabelDato lblDatoDistanciaRecorrida;
-    private LabelDato lblDatoTiempoEnAire;
-    private LabelDato lblDatoTiempoEnAlturaMaxima;
-    private LabelDato lblDatoVelocidadEnTiempo;
-    private LabelDato lblDatoPosicionEnTiempo;
-    private final LabelDato[] lblsDatos = {lblDatoAlturaMaxima, lblDatoDistanciaRecorrida, lblDatoTiempoEnAire,
-        lblDatoTiempoEnAlturaMaxima, lblDatoVelocidadEnTiempo, lblDatoPosicionEnTiempo};
+    /* Labels del panel Velocidad */
+    private LabelDato lblDistanciaRecorrida;
+    private LabelDato lblAlturaMaxima;
+    private LabelDato lblTiempoEnAire;
+    private LabelDato lblTiempoEnAlturaMaxima;
+
+    /* Labels del panel Tiempo */
+    private LabelDato lblPosicionXEnTiempo;
+    private LabelDato lblPosicionYEnTiempo;
+    private LabelDato lblVelocidadYEnTiempo;
+    private LabelDato lblVelocidadEnTiempo;
+
+    /* Labels del panel Distancia */
+    private LabelDato lblPosicionYEnDistancia;
+    private LabelDato lblTiempoEnDistancia;
+    private LabelDato lblVelocidadYEnDistancia;
+    private LabelDato lblVelocidadEnDistancia;
 
     private PanelResultados() {
         initComponents();
@@ -61,10 +65,15 @@ public class PanelResultados extends JPanel {
 
     private void initComponents() {
         setPreferredSize(new Dimension(795, 160));
-        setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.lightGray), "Resultados"));
-        setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        add(leftPanel);
-        add(rightPanel);
+        setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+        panelVelocidad = new PanelVelocidad();
+        panelTiempo = new PanelTiempo();
+        panelDistancia = new PanelDistancia();
+
+        add(panelVelocidad);
+        add(panelTiempo);
+        add(panelDistancia);
     }
 
     public static PanelResultados getInstance() {
@@ -74,66 +83,16 @@ public class PanelResultados extends JPanel {
         return INSTANCE;
     }
 
-    public TextField getTxtAlturaMaxima() {
-        return txtAlturaMaxima;
-    }
-
-    public TextField getTxtDistanciaRecorrida() {
-        return txtDistanciaRecorrida;
-    }
-
-    public TextField getTxtTiempoEnAire() {
-        return txtTiempoEnAire;
-    }
-
-    public JLabel getLblAlturaMaxima() {
-        return lblAlturaMaxima;
-    }
-
-    public TextField getTxtTiempoEnAlturaMaxima() {
-        return txtTiempoEnAlturaMaxima;
-    }
-
-    public TextField getTxtVelocidadEnTiempo() {
-        return txtVelocidadEnTiempo;
-    }
-
-    public TextField getTxtPosicionEnTiempo() {
-        return txtPosicionEnTiempo;
-    }
-
-    public LabelDato getLblDatoAlturaMaxima() {
-        return lblDatoAlturaMaxima;
-    }
-
-    public LabelDato getLblDatoDistanciaRecorrida() {
-        return lblDatoDistanciaRecorrida;
-    }
-
-    public LabelDato getLblDatoTiempoEnAire() {
-        return lblDatoTiempoEnAire;
-    }
-
-    public LabelDato getLblDatoTiempoEnAlturaMaxima() {
-        return lblDatoTiempoEnAlturaMaxima;
-    }
-
-    public LabelDato getLblDatoVelocidadEnTiempo() {
-        return lblDatoVelocidadEnTiempo;
-    }
-
-    public LabelDato getLblDatoPosicionEnTiempo() {
-        return lblDatoPosicionEnTiempo;
-    }
-
     public void setEventos(MouseListener ev) {
-        for (LabelDato lblDato : lblsDatos) {
-            lblDato.addMouseListener(ev);
+        for (Component c : getComponents()) {
+            if (c.getClass().equals(new JLabel().getClass())) {
+                c.addMouseListener(ev);
+            }
         }
     }
 
     public LabelDato[] getLblsDatos() {
-        return lblsDatos;
+        return null;
     }
 
     public class TextField extends JTextField {
@@ -148,74 +107,137 @@ public class PanelResultados extends JPanel {
     public final class LabelDato extends JLabel {
 
         private final ImageIcon icon = new ImageIcon(getClass().getResource("/imagenes/dato.png"));
-
-        public LabelDato() {
-            initComponents();
+        private final String string;
+        
+        public LabelDato(String text) {
+            super.setText(text);
+            super.setIcon(icon);
+            string = getText();
         }
         
-        void initComponents() {
-            setVisible(true);
-            setIcon(icon);
+        public void append(String text) {
+            setText(string + " " + text);
         }
-      
+
     }
 
-    public final class LeftPanel extends JPanel {
+    public final class PanelVelocidad extends JPanel {
 
-        public LeftPanel() {
+        public PanelVelocidad() {
             initComponents();
         }
 
         void initComponents() {
-            setPreferredSize(new Dimension(310, 130));
-            setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-            txtAlturaMaxima = new TextField();
-            txtDistanciaRecorrida = new TextField();
-            txtTiempoEnAire = new TextField();
-            txtTiempoEnAlturaMaxima = new TextField();
-            lblDatoAlturaMaxima = new LabelDato();
-            lblDatoDistanciaRecorrida = new LabelDato();
-            lblDatoTiempoEnAire = new LabelDato();
-            lblDatoTiempoEnAlturaMaxima = new LabelDato();
+            setPreferredSize(PANELDIM);
+            setLayout(new GridLayout(4, 1));
+            setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.lightGray), "Resultados Generales"));
+
+            lblDistanciaRecorrida = new LabelDato(LBLSVELOCIDAD[0]);
+            lblAlturaMaxima = new LabelDato(LBLSVELOCIDAD[1]);
+            lblTiempoEnAire = new LabelDato(LBLSVELOCIDAD[2]);
+            lblTiempoEnAlturaMaxima = new LabelDato(LBLSVELOCIDAD[3]);
 
             add(lblDistanciaRecorrida);
-            add(txtDistanciaRecorrida);
-            add(lblDatoDistanciaRecorrida);
             add(lblAlturaMaxima);
-            add(txtAlturaMaxima);
-            add(lblDatoAlturaMaxima);
             add(lblTiempoEnAire);
-            add(txtTiempoEnAire);
-            add(lblDatoTiempoEnAire);
             add(lblTiempoEnAlturaMaxima);
-            add(txtTiempoEnAlturaMaxima);
-            add(lblDatoTiempoEnAlturaMaxima);
         }
-
     }
 
-    public class RightPanel extends JPanel {
+    public final class PanelTiempo extends JPanel {
 
-        public RightPanel() {
+        public PanelTiempo() {
             initComponents();
         }
 
         void initComponents() {
-            setPreferredSize(new Dimension(350, 130));
-            setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
-            txtVelocidadEnTiempo = new TextField();
-            txtPosicionEnTiempo = new TextField();
-            txtPosicionEnTiempo.setPreferredSize(new Dimension(150, 20));
-            lblDatoVelocidadEnTiempo = new LabelDato();
-            lblDatoPosicionEnTiempo = new LabelDato();
-            add(lblVelocidadEnTiempo);
-            add(txtVelocidadEnTiempo);
-            add(lblDatoVelocidadEnTiempo);
-            add(lblPosicionEnTiempo);
-            add(txtPosicionEnTiempo);
-            add(lblDatoPosicionEnTiempo);
+            setPreferredSize(PANELDIM);
+            setLayout(new GridLayout(4, 1));
+            setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.lightGray), "Resultados respecto al tiempo"));
 
+            lblPosicionXEnTiempo = new LabelDato(LBLSTIEMPO[0]);
+            lblPosicionYEnTiempo = new LabelDato(LBLSTIEMPO[1]);
+            lblVelocidadYEnTiempo = new LabelDato(LBLSTIEMPO[3]);
+            lblVelocidadEnTiempo = new LabelDato(LBLSTIEMPO[4]);
+
+            add(lblPosicionXEnTiempo);
+            add(lblPosicionYEnTiempo);
+            add(lblVelocidadYEnTiempo);
+            add(lblVelocidadEnTiempo);
         }
     }
+
+    public final class PanelDistancia extends JPanel {
+
+        public PanelDistancia() {
+            initComponents();
+        }
+
+        void initComponents() {
+            setPreferredSize(PANELDIM);
+            setLayout(new GridLayout(4, 1));
+            setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.lightGray), "Resultados respecto a la distancia"));
+
+            lblPosicionYEnDistancia = new LabelDato(LBLSDISTANCIA[0]);
+            lblTiempoEnDistancia = new LabelDato(LBLSDISTANCIA[1]);
+            lblVelocidadYEnDistancia = new LabelDato(LBLSDISTANCIA[3]);
+            lblVelocidadEnDistancia = new LabelDato(LBLSDISTANCIA[4]);
+
+            add(lblPosicionYEnDistancia);
+            add(lblTiempoEnDistancia);
+            add(lblVelocidadYEnDistancia);
+            add(lblVelocidadEnDistancia);
+        }
+    }
+
+    public LabelDato getLblDistanciaRecorrida() {
+        return lblDistanciaRecorrida;
+    }
+
+    public LabelDato getLblAlturaMaxima() {
+        return lblAlturaMaxima;
+    }
+
+    public LabelDato getLblTiempoEnAire() {
+        return lblTiempoEnAire;
+    }
+
+    public LabelDato getLblTiempoEnAlturaMaxima() {
+        return lblTiempoEnAlturaMaxima;
+    }
+
+    public LabelDato getLblPosicionXEnTiempo() {
+        return lblPosicionXEnTiempo;
+    }
+
+    public LabelDato getLblPosicionYEnTiempo() {
+        return lblPosicionYEnTiempo;
+    }
+
+    public LabelDato getLblVelocidadYEnTiempo() {
+        return lblVelocidadYEnTiempo;
+    }
+
+    public LabelDato getLblVelocidadEnTiempo() {
+        return lblVelocidadEnTiempo;
+    }
+
+    public LabelDato getLblPosicionYEnDistancia() {
+        return lblPosicionYEnDistancia;
+    }
+
+    public LabelDato getLblTiempoEnDistancia() {
+        return lblTiempoEnDistancia;
+    }
+
+    public LabelDato getLblVelocidadYEnDistancia() {
+        return lblVelocidadYEnDistancia;
+    }
+
+    public LabelDato getLblVelocidadEnDistancia() {
+        return lblVelocidadEnDistancia;
+    }
+
+    
     
 }

@@ -12,7 +12,7 @@ package utility;
 public class IUtility extends Eventos implements Utility{
 
     @Override
-    public String disminuirDecimales(double num) {
+    public String round(double num) {
         return String.format("%.2f", num);
     }
 
@@ -28,7 +28,7 @@ public class IUtility extends Eventos implements Utility{
 
     @Override
     public int aInteger(double num) {
-        return Integer.valueOf(disminuirDecimales(num));
+        return Integer.valueOf(round(num));
     }
 
     @Override

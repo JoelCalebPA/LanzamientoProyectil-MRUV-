@@ -21,7 +21,7 @@ public interface Utility {
     public static final String ANGULO = "°";
     public static final String NUMREGEX = "^(\\d*\\.?\\d*)$";
     
-    public String disminuirDecimales(double num);
+    public String round(double num);
 
     public double aDouble(String text);
     

@@ -33,15 +33,20 @@ public class PanelDatos extends JPanel {
     private JTextField txtVelocidad;
     private JTextField txtTiempo;
     private JTextField txtAngulo;
+    private JTextField txtDistancia;
 
     private JComboBox<String> cbVelocidad;
     private JComboBox<String> cbTiempo;
+    private JComboBox<String> cbDistancia;
+    private JComboBox<String> cbAngulo;
 
     private SliderAngulo sliderAngulo;
 
     private final String[] LABELS = {"Distancia:", "Velocidad:", "Tiempo:", "Ángulo:"};
     private final String[] CBVELOCIDAD = {"m/s"};
     private final String[] CBTIEMPO = {"s"};
+    private final String[] CBDISTANCIA = {"m", "km"};
+    private final String[] CBANGULO = {"°", "rad"};
 
     private final Dimension txtDim = new Dimension(60, 20);
     private final Dimension cbDim = new Dimension(60, 20);
@@ -73,25 +78,33 @@ public class PanelDatos extends JPanel {
         JLabel lblVelocidad = new JLabel(LABELS[1]);
         JLabel lblTiempo = new JLabel(LABELS[2]);
         JLabel lblAngulo = new JLabel(LABELS[3]);
+        JLabel lblDistancia = new JLabel(LABELS[0]);
 
         txtVelocidad = new JTextField();
         txtTiempo = new JTextField();
         txtAngulo = new JTextField();
+        txtDistancia = new JTextField();
 
         txtVelocidad.setPreferredSize(txtDim);
         txtTiempo.setPreferredSize(txtDim);
         txtAngulo.setPreferredSize(txtDim);
+        txtDistancia.setPreferredSize(txtDim);
 
         cbVelocidad = new JComboBox<>();
         cbTiempo = new JComboBox<>();
+        cbDistancia = new JComboBox<>();
+        cbAngulo = new JComboBox<>();
 
         cbVelocidad.setPreferredSize(cbDim);
         cbTiempo.setPreferredSize(cbDim);
+        cbDistancia.setPreferredSize(cbDim);
+        cbAngulo.setPreferredSize(cbDim);
 
         cbVelocidad.addItem(CBVELOCIDAD[0]);
         cbTiempo.addItem(CBTIEMPO[0]);
+        cbDistancia.addItem(CBDISTANCIA[0]);
+        cbAngulo.addItem(CBANGULO[0]);
 
-        txtAngulo.setEditable(false);
         lblVelocidad.setLabelFor(txtVelocidad);
         lblTiempo.setLabelFor(txtTiempo);
         lblAngulo.setLabelFor(txtAngulo);
@@ -100,18 +113,21 @@ public class PanelDatos extends JPanel {
         lblPosActualY = new JLabel("Posición actual en Y: ");
         lblVelActualX = new JLabel("Velocidad actual en X: ");
         lblVelActualY = new JLabel("Velocidad actual en Y: ");
-        
+
         add(lblVelocidad);
         add(txtVelocidad);
         add(cbVelocidad);
         add(lblTiempo);
         add(txtTiempo);
         add(cbTiempo);
+        add(lblDistancia);
+        add(txtDistancia);
+        add(cbDistancia);
         add(lblAngulo);
         add(txtAngulo);
+        add(cbAngulo);
         add(sliderAngulo);
         add(btnIniciarAnimacion);
-        add(new JLabel(" ------------------------------------------------- "));
         add(lblPosActualX);
         add(lblPosActualY);
         add(lblVelActualX);
@@ -128,6 +144,10 @@ public class PanelDatos extends JPanel {
 
     public JTextField getTxtAngulo() {
         return txtAngulo;
+    }
+
+    public JTextField getTxtDistancia() {
+        return txtDistancia;
     }
 
     public SliderAngulo getSliderAngulo() {

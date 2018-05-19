@@ -51,13 +51,12 @@ public class MainController extends IUtility {
 
     int x = 0;
     int y = 0;
-    double xT;
-    double yT;
     double vx;
     double vy;
 
     private boolean velocidadOK = false;
     private boolean tiempoOK = false;
+    private boolean distanciaOK = false;
     private boolean anguloOK = false;
 
     public MainController() {
@@ -95,17 +94,19 @@ public class MainController extends IUtility {
             distanciaRecorrida = Ecuaciones.calcularDistanciaRecorrida(velocidadInicial, angulo);
             tiemporEnAire = Ecuaciones.calcularTiempoEnAire(velocidadInicial, angulo);
             tiempoEnAlturaMaxima = Ecuaciones.calcularTiempoEnAlturaMaxima(vy);
-            pR.getTxtAlturaMaxima().setText(disminuirDecimales(alturaMaxima) + M);
-            pR.getTxtDistanciaRecorrida().setText(disminuirDecimales(distanciaRecorrida) + M);
-            pR.getTxtTiempoEnAire().setText(disminuirDecimales(tiemporEnAire) + SEG);
-            pR.getTxtTiempoEnAlturaMaxima().setText(disminuirDecimales(tiempoEnAlturaMaxima) + SEG);
+            pR.getLblAlturaMaxima().append(round(alturaMaxima) + M);
+            pR.getLblDistanciaRecorrida().append(round(distanciaRecorrida) + M);
+            pR.getLblTiempoEnAire().append(round(tiemporEnAire) + SEG);
+            pR.getLblTiempoEnAlturaMaxima().append(round(tiempoEnAlturaMaxima) + SEG);
             if (tiempoOK) {
                 tiempo = aDouble(pD.getTxtTiempo().getText());
                 velocidadEnTiempo = Ecuaciones.calcularVelocidadEnTiempo(vx, vy, tiempo);
-                xT = Ecuaciones.calcularPosicionX(vx, tiempo);
-                yT = Ecuaciones.calcularPosicionY(vy, tiempo);
-                pR.getTxtVelocidadEnTiempo().setText(disminuirDecimales(velocidadEnTiempo) + VM);
-                pR.getTxtPosicionEnTiempo().setText("X: " + disminuirDecimales(xT) + M + "   Y: " + disminuirDecimales(yT) + M);
+                pR.getLblPosicionXEnTiempo().append(round(Ecuaciones.calcularPosicionX(vx, tiempo)));
+                pR.getLblPosicionYEnTiempo().append(round(Ecuaciones.calcularPosicionY(vy, tiempo)));
+                pR.getLblVelocidadYEnTiempo().append(round(Ecuaciones.calcularVelocidadTiempoY(vy, tiempo)));
+                pR.getLblVelocidadEnTiempo().append(round(Ecuaciones.calcularVelocidadEnTiempo(vx, vy, tiempo)));
+                //pR.getTxtVelocidadEnTiempo().setText(round(velocidadEnTiempo) + VM);
+                //pR.getTxtPosicionEnTiempo().setText("X: " + round(xT) + M + "   Y: " + round(yT) + M);
             }
         } catch (Exception ex) {
             System.err.println(ex);
@@ -187,6 +188,20 @@ public class MainController extends IUtility {
                         JOptionPane.showMessageDialog(pD, "Ingrese un número");
                         pD.getTxtTiempo().setText(null);
                     }
+                } else if (e.getSource().equals(pD.getTxtTiempo())) {
+                    String txt = pD.getTxtTiempo().getText();
+                    if (txt.matches(NUMREGEX) && txt.length() > 0) {
+                        tiempoOK = true;
+                        pD.getTxtTiempo().setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                        if (anguloOK && velocidadOK) {
+                            calcularResultados();
+                        }
+                    } else {
+                        tiempoOK = false;
+                        pD.getTxtTiempo().setBorder(BorderFactory.createLineBorder(Color.red, 2));
+                        JOptionPane.showMessageDialog(pD, "Ingrese un número");
+                        pD.getTxtTiempo().setText(null);
+                    }
                 }
             }
         } catch (HeadlessException ex) {
@@ -196,7 +211,7 @@ public class MainController extends IUtility {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        try {
+        /*try {
             if (e.getSource().equals(pR.getLblDatoAlturaMaxima())) {
                 dM.setDato(1, e.getXOnScreen(), e.getYOnScreen());
                 dM.setVisible(true);
@@ -216,7 +231,7 @@ public class MainController extends IUtility {
             }
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
-        }
+        }*/
     }
     
     @Override
@@ -246,8 +261,8 @@ public class MainController extends IUtility {
                 pS.getPuntosY().add(270 - y);
                 pD.getLblPosActualX().setText("Posición actual en X:   " + (pS.getProyectil().getPosX() - 20) + "m");
                 pD.getLblPosActualY().setText("Posición actual en Y:   " + (270 - pS.getProyectil().getPosY()) + "m");
-                pD.getLblVelActualX().setText("Velocidad actual en X:   " + disminuirDecimales(vx) + "m/s");
-                pD.getLblVelActualY().setText("Velocidad actual en Y:   " + disminuirDecimales(Ecuaciones.calcularVelocidadTiempoY(vy, temp)) + "m/s");
+                pD.getLblVelActualX().setText("Velocidad actual en X:   " + round(vx) + "m/s");
+                pD.getLblVelActualY().setText("Velocidad actual en Y:   " + round(Ecuaciones.calcularVelocidadTiempoY(vy, temp)) + "m/s");
                 Thread.sleep(20);
                 pS.getProyectil().mover((int) x, (int) y);
                 pS.repaint();
